@@ -1,6 +1,14 @@
+
+> dra-heloisa-pavanello-landing@1.0.0 dev
+> next dev
+
    ▲ Next.js 15.5.19
    - Local:        http://localhost:3000
-   - Network:      http://172.23.128.1:3000
+   - Network:      http://192.168.100.95:3000
 
  ✓ Starting...
- ✓ Ready in 625ms
+ ✓ Ready in 2.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 2.6s (1431 modules)
+ GET / 200 in 3767ms
+ GET / 200 in 451ms

@@ -116,7 +116,7 @@ const testimonials = [
   {
     name: "Mariana e Thor",
     pet: "Dermatite alergica controlada",
-    image: "/dra-heloisa-consultório.png",
+    image: "/dra-heloisa-consultorio.png",
     text: "A Dra. Heloisa investigou tudo com calma, explicou cada etapa e montou um tratamento que finalmente trouxe conforto para o Thor."
   },
   {
@@ -428,7 +428,7 @@ export default function Home() {
             <div className="relative overflow-hidden rounded-[3rem] border border-white/80 bg-white/58 p-3 shadow-[0_34px_120px_rgba(23,33,43,0.18)] backdrop-blur-2xl">
               <div className="relative aspect-[0.92] overflow-hidden rounded-[2.35rem] bg-ivory">
                 <Image
-                  src="/dra-heloisa-consultório.png"
+                  src="/dra-heloisa-consultorio.png"
                   alt="Dra. Heloisa Pavanello em consultório veterinario"
                   fill
                   priority
