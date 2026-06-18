@@ -39,7 +39,8 @@ import {
 import { Button } from "@/components/button";
 import { cn } from "@/lib/utils";
 
-const whatsapp = "https://wa.me/5511999999999";
+const whatsapp = "https://wa.me/5511966199872";
+const instagram = "https://www.instagram.com/draheloisapavanello";
 const appointment = "#agendar";
 
 const navItems = [
@@ -116,19 +117,19 @@ const testimonials = [
   {
     name: "Mariana e Thor",
     pet: "Dermatite alergica controlada",
-    image: "/dra-heloisa-consultorio.png",
+    image: "/testimonial-dog-dermatite.jpg",
     text: "A Dra. Heloisa investigou tudo com calma, explicou cada etapa e montou um tratamento que finalmente trouxe conforto para o Thor."
   },
   {
     name: "Camila e Nina",
     pet: "Coceira recorrente",
-    image: "/dra-heloisa-paciente.png",
+    image: "/testimonial-dog-coceira.jpg",
     text: "O atendimento foi muito cuidadoso. Senti segurança porque não foi uma consulta apressada, foi um plano completo para acompanhar a Nina."
   },
   {
     name: "Fernanda e Bento",
     pet: "Pele sensível",
-    image: "/dra-heloisa-editorial.png",
+    image: "/testimonial-dog-pele-sensivel.jpg",
     text: "A melhora veio com acompanhamento, ajustes e orientação clara. A experiência foi premium e muito humana."
   }
 ];
@@ -718,7 +719,11 @@ export default function Home() {
                 especializado para a saúde da pele do seu cão ou gato.
               </p>
               <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button href={appointment} variant="secondary" className="h-14 px-8 text-base">
+                <Button
+                  href={appointment}
+                  variant="secondary"
+                  className="h-14 border-white/70 bg-transparent px-8 text-base text-white hover:bg-white hover:text-ink"
+                >
                   <CalendarDays className="h-5 w-5" />
                   Agendar Consulta
                 </Button>
@@ -744,7 +749,7 @@ export default function Home() {
             <p className="font-semibold text-ink">Contato</p>
             <a href={whatsapp} className="mt-3 inline-flex items-center gap-2 text-sm text-ink/62 transition hover:text-clinic">
               <Phone className="h-4 w-4" />
-              WhatsApp
+              (11) 96619-9872
             </a>
           </div>
           <div>
@@ -755,9 +760,9 @@ export default function Home() {
           </div>
           <div>
             <p className="font-semibold text-ink">Redes sociais</p>
-            <a href="#" className="mt-3 inline-flex items-center gap-2 text-sm text-ink/62 transition hover:text-clinic">
+            <a href={instagram} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm text-ink/62 transition hover:text-clinic">
               <Instagram className="h-4 w-4" />
-              Instagram
+              @draheloisapavanello
             </a>
           </div>
         </div>

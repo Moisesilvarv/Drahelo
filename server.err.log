@@ -1,2 +1,39 @@
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
- ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '4033829359'
+}
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '1391123755'
+}
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '1391123755'
+}
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '1391123755'
+}
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '4033829359'
+}
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '4033829359'
+}
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function] {
+  digest: '2918327430'
+}
+ ⨯ Error: Could not find the module "C:\Users\Maria\Pictures\Projeto\DRAHELO\node_modules\next\dist\next-devtools\userspace\app\segment-explorer-node.js#SegmentViewNode" in the React Client Manifest. This is probably a bug in the React Server Components bundler.
+    at stringify (<anonymous>) {
+  digest: '4033829359'
+}
+[TypeError: __webpack_modules__[moduleId] is not a function]
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function]
+ ⨯ [TypeError: __webpack_modules__[moduleId] is not a function] {
+  page: '/'
+}

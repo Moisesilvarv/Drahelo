@@ -7,8 +7,16 @@
    - Network:      http://192.168.100.95:3000
 
  ✓ Starting...
- ✓ Ready in 2.7s
+ ✓ Ready in 2.3s
  ○ Compiling / ...
- ✓ Compiled / in 2.6s (1431 modules)
- GET / 200 in 3767ms
- GET / 200 in 451ms
+ ✓ Compiled / in 3.4s (1445 modules)
+ GET / 200 in 4033ms
+ GET / 200 in 300ms
+ GET / 200 in 213ms
+ ✓ Compiled in 651ms (1445 modules)
+ GET / 200 in 181ms
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.7s (1778 modules)
+ GET / 200 in 1728ms
+ GET / 200 in 24ms
+ GET / 500 in 7714ms
