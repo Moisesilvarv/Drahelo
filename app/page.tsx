@@ -3,9 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import {
-  animate,
   motion,
-  useInView,
   useScroll,
   useTransform
 } from "framer-motion";
@@ -23,7 +21,10 @@ import {
   Dog,
   HeartPulse,
   Instagram,
+  Mail,
   Microscope,
+  MapPin,
+  MessageCircle,
   PawPrint,
   Phone,
   Quote,
@@ -31,9 +32,6 @@ import {
   Sparkles,
   Star,
   Stethoscope,
-  Syringe,
-  Trophy,
-  UsersRound,
   Waves
 } from "lucide-react";
 import { Button } from "@/components/button";
@@ -41,20 +39,24 @@ import { cn } from "@/lib/utils";
 
 const whatsapp = "https://wa.me/5511966199872";
 const instagram = "https://www.instagram.com/draheloisapavanello";
+const email = "heloisa.pavanello@gmail.com";
 const appointment = "#agendar";
+const officeLocation = "Moema - SP";
+const mapQuery = "Dra.%20Heloisa%20Pavanello%20Dermatologia%20Veterin%C3%A1ria%20Moema%20SP";
 
 const navItems = [
   { label: "Sobre", href: "#sobre" },
   { label: "Serviços", href: "#servicos" },
-  { label: "Resultados", href: "#resultados" },
   { label: "Avaliações", href: "#avaliacoes" },
+  { label: "Localização", href: "#localizacao" },
   { label: "FAQ", href: "#faq" }
 ];
 
 const heroBadges = [
   { label: "CRMV-SP 74108", icon: BadgeCheck },
   { label: "Dermatologia Veterinária", icon: Award },
-  { label: "Atendimento para cães e gatos", icon: PawPrint }
+  { label: "Atendimento para cães e gatos", icon: PawPrint },
+  { label: officeLocation, icon: MapPin }
 ];
 
 const services = [
@@ -104,13 +106,6 @@ const differentials = [
   "Foco em conforto, segurança e qualidade de vida",
   "Atualização científica constante",
   "Plano claro para casa e retornos"
-];
-
-const stats = [
-  { value: 1200, suffix: "+", label: "pacientes atendidos" },
-  { value: 8, suffix: "+", label: "anos de experiência" },
-  { value: 98, suffix: "%", label: "taxa de satisfação" },
-  { value: 3500, suffix: "+", label: "consultas realizadas" }
 ];
 
 const testimonials = [
@@ -186,33 +181,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
       {children}
     </div>
   );
-}
-
-function CountUp({
-  value,
-  suffix
-}: {
-  value: number;
-  suffix: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
-  useEffect(() => {
-    if (!inView || !ref.current) return;
-    const controls = animate(0, value, {
-      duration: 1.7,
-      ease: "easeOut",
-      onUpdate(latest) {
-        if (ref.current) {
-          ref.current.textContent = `${Math.round(latest).toLocaleString("pt-BR")}${suffix}`;
-        }
-      }
-    });
-    return () => controls.stop();
-  }, [inView, suffix, value]);
-
-  return <span ref={ref}>0{suffix}</span>;
 }
 
 function FaqItem({
@@ -298,6 +266,17 @@ export default function Home() {
 
   return (
     <main className="relative overflow-hidden">
+      <a
+        href={whatsapp}
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Falar com a Dra. Heloisa pelo WhatsApp"
+        className="fixed bottom-5 right-5 z-50 inline-flex h-14 items-center gap-3 rounded-full border border-white/70 bg-clinic px-5 text-sm font-semibold text-white shadow-[0_22px_70px_rgba(29,92,115,0.32)] transition duration-300 hover:-translate-y-1 hover:bg-ink hover:shadow-[0_28px_90px_rgba(23,33,43,0.28)] focus:outline-none focus:ring-2 focus:ring-clinic/30 focus:ring-offset-2 sm:bottom-7 sm:right-7"
+      >
+        <MessageCircle className="h-5 w-5" />
+        <span className="hidden sm:inline">WhatsApp</span>
+      </a>
+
       <nav
         className={cn(
           "fixed inset-x-0 top-0 z-50 border-b transition-all duration-500",
@@ -347,8 +326,11 @@ export default function Home() {
         </div>
       </nav>
 
-      <section ref={heroRef} className="relative min-h-screen overflow-hidden px-4 pb-20 pt-32 md:pt-40">
+      <section ref={heroRef} className="hero-premium relative min-h-screen overflow-hidden px-4 pb-20 pt-32 md:pt-40">
         <div className="absolute inset-0 premium-grid opacity-80" />
+        <div className="absolute left-1/2 top-28 h-[28rem] w-[76rem] -translate-x-1/2 rounded-[100%] border border-white/70 bg-white/16 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-[2px]" />
+        <div className="absolute right-[8%] top-32 hidden h-44 w-44 rotate-12 rounded-[3rem] border border-white/60 bg-white/20 shadow-[0_28px_90px_rgba(23,33,43,0.08)] backdrop-blur-xl lg:block" />
+        <div className="absolute bottom-24 left-[7%] hidden h-32 w-32 -rotate-12 rounded-full border border-aureate/18 bg-white/34 shadow-[0_24px_70px_rgba(181,154,98,0.11)] backdrop-blur-xl lg:block" />
         <motion.div
           style={{ y: glowY }}
           className="ambient-glow absolute -left-32 top-16 h-[34rem] w-[34rem] rounded-full bg-sand/42 blur-3xl"
@@ -451,18 +433,19 @@ export default function Home() {
               </div>
             </div>
             <div className="absolute -right-4 top-12 hidden rounded-[1.7rem] border border-white/70 bg-white/74 p-5 shadow-[0_22px_70px_rgba(23,33,43,0.12)] backdrop-blur-2xl md:block">
-              <p className="text-3xl font-semibold text-ink">98%</p>
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-clinic text-white shadow-soft">
+                <ShieldCheck className="h-6 w-6" />
+              </div>
+              <p className="mt-3 text-sm font-semibold text-ink">Conduta segura</p>
               <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-ink/48">
-                satisfação
+                diagnóstico claro
               </p>
             </div>
             <div className="absolute -left-5 bottom-16 hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-[0_22px_70px_rgba(23,33,43,0.12)] backdrop-blur-2xl md:block">
-              <div className="flex items-center gap-2 text-aureate">
-                {[0, 1, 2, 3, 4].map((star) => (
-                  <Star key={star} className="h-4 w-4 fill-current" />
-                ))}
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-aureate/14 text-aureate shadow-sm">
+                <HeartPulse className="h-6 w-6" />
               </div>
-              <p className="mt-2 text-sm font-semibold text-ink">Nota Google 5.0</p>
+              <p className="mt-3 text-sm font-semibold text-ink">Acompanhamento próximo</p>
             </div>
           </motion.div>
         </div>
@@ -579,30 +562,68 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="resultados" className="relative px-4 py-28">
-        <div className="absolute inset-x-0 top-1/2 h-[30rem] -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(29,92,115,0.12),transparent_62%)]" />
+      <section id="localizacao" className="relative px-4 py-28">
+        <div className="absolute inset-x-0 top-1/2 h-[32rem] -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(29,92,115,0.12),transparent_62%)]" />
         <div className="relative mx-auto max-w-7xl">
-          <Reveal className="mx-auto max-w-3xl text-center">
-            <SectionLabel>Autoridade em números</SectionLabel>
-            <h2 className="text-balance text-4xl font-semibold leading-tight text-ink md:text-6xl">
-              Dados que reforçam experiência, consistência e confiança.
-            </h2>
-          </Reveal>
+          <div className="grid items-start gap-8 lg:grid-cols-[0.82fr_1.18fr]">
+            <Reveal>
+              <SectionLabel>Localização</SectionLabel>
+              <h2 className="text-balance text-4xl font-semibold leading-tight text-ink md:text-6xl">
+                Atendimento dermatológico veterinário em Moema - SP.
+              </h2>
+              <p className="mt-6 max-w-xl text-lg leading-8 text-ink/62">
+                Confirme a localização, disponibilidade e orientações para chegada
+                diretamente pelos canais oficiais antes da consulta.
+              </p>
 
-          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat, index) => (
-              <Reveal key={stat.label} delay={index * 0.06}>
-                <div className="relative overflow-hidden rounded-[2rem] border border-white/72 bg-white/68 p-7 text-center shadow-[0_20px_70px_rgba(23,33,43,0.07)] backdrop-blur-2xl transition duration-500 hover:-translate-y-2 hover:shadow-glow">
-                  <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-aureate/70 to-transparent" />
-                  <p className="text-5xl font-semibold tracking-normal text-ink">
-                    <CountUp value={stat.value} suffix={stat.suffix} />
-                  </p>
-                  <p className="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-ink/46">
-                    {stat.label}
-                  </p>
+              <div className="mt-9 grid gap-4">
+                <div className="group flex items-start gap-4 rounded-[1.8rem] border border-white/72 bg-white/70 p-5 shadow-[0_20px_70px_rgba(23,33,43,0.08)] backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:bg-white">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-clinic text-white shadow-soft transition duration-300 group-hover:bg-ink">
+                    <MapPin className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-ink">Área de atendimento</h3>
+                    <p className="mt-2 text-sm leading-7 text-ink/62">
+                      Escritório em {officeLocation}. Dermatologia veterinaria para cães e gatos mediante agendamento.
+                    </p>
+                  </div>
                 </div>
-              </Reveal>
-            ))}
+
+                <div className="group flex items-start gap-4 rounded-[1.8rem] border border-white/72 bg-white/70 p-5 shadow-[0_20px_70px_rgba(23,33,43,0.08)] backdrop-blur-2xl transition duration-300 hover:-translate-y-1 hover:bg-white">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-aureate/14 text-aureate shadow-sm transition duration-300 group-hover:bg-aureate group-hover:text-white">
+                    <Phone className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-ink">Contato oficial</h3>
+                    <div className="mt-2 flex flex-col gap-2">
+                      <a href={whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm font-semibold text-clinic transition hover:text-ink">
+                        (11) 96619-9872
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                      <a href={`mailto:${email}`} className="inline-flex items-center gap-2 text-sm font-semibold text-clinic transition hover:text-ink">
+                        {email}
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="map-frame relative overflow-hidden rounded-[2.6rem] border border-white/72 bg-white/64 p-3 shadow-[0_34px_120px_rgba(23,33,43,0.13)] backdrop-blur-2xl">
+                <div className="absolute left-8 top-8 z-10 hidden rounded-full border border-white/70 bg-white/82 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-clinic shadow-sm backdrop-blur-xl sm:inline-flex">
+                  Mapa e rota
+                </div>
+                <iframe
+                  title="Mapa para Dra. Heloisa Pavanello Dermatologia Veterinária em Moema - SP"
+                  src={`https://www.google.com/maps?q=${mapQuery}&output=embed`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="h-[420px] w-full rounded-[2rem] border-0 grayscale-[18%] md:h-[560px]"
+                />
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
@@ -631,7 +652,7 @@ export default function Home() {
                     </motion.span>
                   ))}
                 </div>
-                <p className="mt-4 text-4xl font-semibold">5.0 Google</p>
+                <p className="mt-4 text-4xl font-semibold">Avaliações dos tutores</p>
                 <p className="mt-2 text-sm leading-6 text-white/62">
                   Experiencia de atendimento percebida em detalhes: escuta, explicação,
                   acompanhamento e segurança.
@@ -747,15 +768,19 @@ export default function Home() {
           </div>
           <div>
             <p className="font-semibold text-ink">Contato</p>
-            <a href={whatsapp} className="mt-3 inline-flex items-center gap-2 text-sm text-ink/62 transition hover:text-clinic">
+            <a href={whatsapp} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 text-sm text-ink/62 transition hover:text-clinic">
               <Phone className="h-4 w-4" />
               (11) 96619-9872
+            </a>
+            <a href={`mailto:${email}`} className="mt-3 inline-flex items-center gap-2 text-sm text-ink/62 transition hover:text-clinic">
+              <Mail className="h-4 w-4" />
+              {email}
             </a>
           </div>
           <div>
             <p className="font-semibold text-ink">Atendimento</p>
             <p className="mt-3 text-sm leading-7 text-ink/62">
-              Dermatologia veterinaria para cães e gatos mediante agendamento.
+              Escritório em {officeLocation}. Dermatologia veterinaria para cães e gatos mediante agendamento.
             </p>
           </div>
           <div>
