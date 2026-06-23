@@ -2,23 +2,16 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform
-} from "framer-motion";
-import { gsap } from "gsap";
+import { AnimatePresence, motion } from "framer-motion";
 import Lenis from "lenis";
 import {
   ArrowRight,
   Award,
   BadgeCheck,
   CalendarDays,
-  Cat,
   Check,
   ChevronDown,
   ClipboardCheck,
-  Dog,
   HeartPulse,
   Instagram,
   Mail,
@@ -55,8 +48,7 @@ const navItems = [
 const heroBadges = [
   { label: "CRMV-SP 74108", icon: BadgeCheck },
   { label: "Dermatologia Veterinária", icon: Award },
-  { label: "Atendimento para cães e gatos", icon: PawPrint },
-  { label: officeLocation, icon: MapPin }
+  { label: "Atendimento para cães e gatos", icon: PawPrint }
 ];
 
 const services = [
@@ -183,6 +175,53 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
+function LoadingScreen() {
+  return (
+    <motion.div
+      className="loader-screen"
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <motion.div
+        className="loader-card"
+        initial={{ opacity: 0, y: 18, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="loader-mark">
+          <Image
+            src="/dra-heloisa-logo-photo.png"
+            alt="Dra. Heloisa Pavanello"
+            width={96}
+            height={96}
+            priority
+            className="h-full w-full object-cover object-[50%_38%]"
+          />
+        </div>
+        <p className="loader-name">Dra. Heloisa Pavanello</p>
+        <p className="loader-subtitle">Dermatologia Veterinária</p>
+        <div className="loader-paws" aria-hidden="true">
+          {[0, 1, 2].map((paw) => (
+            <motion.span
+              key={paw}
+              animate={{ y: [0, -8, 0], opacity: [0.45, 1, 0.45] }}
+              transition={{
+                duration: 1.15,
+                delay: paw * 0.18,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <PawPrint className="h-5 w-5" />
+            </motion.span>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 function FaqItem({
   item,
   active,
@@ -223,13 +262,33 @@ function FaqItem({
 export default function Home() {
   const [openFaq, setOpenFaq] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  const [loading, setLoading] = useState(true);
   const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  });
-  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 72]);
-  const glowY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+
+  useEffect(() => {
+    let mounted = true;
+    const finish = () => {
+      window.setTimeout(() => {
+        if (mounted) setLoading(false);
+      }, 650);
+    };
+
+    if (document.readyState === "complete") {
+      finish();
+    } else {
+      window.addEventListener("load", finish, { once: true });
+    }
+
+    const fallback = window.setTimeout(() => {
+      if (mounted) setLoading(false);
+    }, 2400);
+
+    return () => {
+      mounted = false;
+      window.removeEventListener("load", finish);
+      window.clearTimeout(fallback);
+    };
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 28);
@@ -252,20 +311,10 @@ export default function Home() {
     };
   }, []);
 
-  useEffect(() => {
-    gsap.to(".ambient-glow", {
-      scale: 1.1,
-      opacity: 0.78,
-      duration: 5,
-      ease: "sine.inOut",
-      yoyo: true,
-      repeat: -1,
-      stagger: 0.8
-    });
-  }, []);
-
   return (
     <main className="relative overflow-hidden">
+      <AnimatePresence>{loading && <LoadingScreen />}</AnimatePresence>
+
       <a
         href={whatsapp}
         target="_blank"
@@ -282,7 +331,7 @@ export default function Home() {
           "fixed inset-x-0 top-0 z-50 border-b transition-all duration-500",
           scrolled
             ? "border-ink/8 bg-white/76 shadow-[0_18px_70px_rgba(23,33,43,0.10)] backdrop-blur-3xl"
-            : "border-white/60 bg-white/50 backdrop-blur-xl"
+            : "border-white/10 bg-black/30 backdrop-blur-xl"
         )}
       >
         <div
@@ -292,26 +341,43 @@ export default function Home() {
           )}
         >
           <a href="#" className="group flex items-center gap-4">
-            <span className="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl bg-ink text-base font-semibold text-white shadow-[0_16px_40px_rgba(23,33,43,0.20)] transition duration-300 group-hover:-translate-y-0.5 group-hover:bg-clinic">
-              HP
+            <span
+              className={cn(
+                "relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl text-base font-semibold shadow-[0_16px_40px_rgba(23,33,43,0.20)] transition duration-300 group-hover:-translate-y-0.5 group-hover:bg-clinic group-hover:text-white",
+                scrolled ? "bg-white text-white" : "bg-white/90 text-ink"
+              )}
+            >
+              <Image
+                src="/dra-heloisa-logo-photo.png"
+                alt="Dra. Heloisa Pavanello"
+                width={72}
+                height={72}
+                priority
+                className="h-full w-full object-cover object-[50%_38%]"
+              />
               <span className="absolute inset-0 bg-[linear-gradient(135deg,transparent,rgba(255,255,255,0.28),transparent)] opacity-0 transition duration-500 group-hover:opacity-100" />
             </span>
             <span className="leading-tight">
-              <span className="block text-base font-semibold text-ink md:text-lg">
+              <span className={cn("block text-base font-semibold md:text-lg", scrolled ? "text-ink" : "text-white")}>
                 Dra. Heloisa Pavanello
               </span>
-              <span className="block text-xs font-medium uppercase tracking-[0.18em] text-ink/48">
+              <span className={cn("block text-xs font-medium uppercase tracking-[0.18em]", scrolled ? "text-ink/50" : "text-white/80")}>
                 Dermatologia Veterinária
               </span>
             </span>
           </a>
 
-          <div className="hidden items-center gap-1 rounded-full border border-ink/6 bg-white/56 p-1.5 text-sm font-semibold text-ink/62 shadow-sm backdrop-blur-xl lg:flex">
+          <div className={cn("hero-nav-links hidden items-center justify-center gap-7 text-sm font-semibold", scrolled ? "is-scrolled text-ink/70" : "text-white")}>
             {navItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
-                className="rounded-full px-4 py-2.5 transition duration-300 hover:bg-ink hover:text-white"
+                className={cn(
+                  "relative py-2 transition duration-300 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-center after:scale-x-0 after:transition-transform after:duration-300 hover:after:scale-x-100",
+                  scrolled
+                    ? "hover:text-ink after:bg-clinic"
+                    : "hover:text-white after:bg-white/72"
+                )}
               >
                 {item.label}
               </a>
@@ -326,127 +392,95 @@ export default function Home() {
         </div>
       </nav>
 
-      <section ref={heroRef} className="hero-premium relative min-h-screen overflow-hidden px-4 pb-20 pt-32 md:pt-40">
-        <div className="absolute inset-0 premium-grid opacity-80" />
-        <div className="absolute left-1/2 top-28 h-[28rem] w-[76rem] -translate-x-1/2 rounded-[100%] border border-white/70 bg-white/16 shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] backdrop-blur-[2px]" />
-        <div className="absolute right-[8%] top-32 hidden h-44 w-44 rotate-12 rounded-[3rem] border border-white/60 bg-white/20 shadow-[0_28px_90px_rgba(23,33,43,0.08)] backdrop-blur-xl lg:block" />
-        <div className="absolute bottom-24 left-[7%] hidden h-32 w-32 -rotate-12 rounded-full border border-aureate/18 bg-white/34 shadow-[0_24px_70px_rgba(181,154,98,0.11)] backdrop-blur-xl lg:block" />
-        <motion.div
-          style={{ y: glowY }}
-          className="ambient-glow absolute -left-32 top-16 h-[34rem] w-[34rem] rounded-full bg-sand/42 blur-3xl"
-        />
-        <div className="ambient-glow absolute right-[-12rem] top-16 h-[42rem] w-[42rem] rounded-full bg-clinic/18 blur-3xl" />
-        <div className="ambient-glow absolute bottom-[-12rem] left-1/3 h-[34rem] w-[34rem] rounded-full bg-aureate/16 blur-3xl" />
+      <section ref={heroRef} className="hero-premium relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-32 text-center md:py-40">
+        <video
+          className="absolute inset-0 z-0 h-full w-full object-cover hero-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster="/hero-video-poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 z-10 hero-video-overlay" />
+        <div className="absolute inset-0 z-20 hero-video-grade" />
+        <div className="absolute inset-0 z-30 hero-video-vignette" />
+        <div className="hero-soft-divider" aria-hidden="true" />
 
-        <div className="relative mx-auto grid min-h-[calc(100vh-10rem)] max-w-7xl items-center gap-14 lg:grid-cols-[0.94fr_1.06fr]">
-          <div className="relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-7 inline-flex items-center gap-2 rounded-full border border-clinic/10 bg-white/72 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-clinic shadow-[0_14px_50px_rgba(23,33,43,0.08)] backdrop-blur-2xl"
+        <div className="relative z-40 mx-auto flex min-h-[calc(100vh-12rem)] w-full max-w-6xl flex-col items-center justify-center">
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-5 text-sm font-bold uppercase tracking-[0.28em] text-white sm:text-base"
+            data-hero-text="light"
+          >
+            Dermatologia veterinária especializada para cães e gatos.
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 34 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
+            className="max-w-5xl text-balance text-5xl font-semibold leading-[0.95] tracking-normal text-white hero-title-shadow sm:text-7xl lg:text-[6.8rem]"
+          >
+            Dra. Heloisa Pavanello
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-7 max-w-3xl text-lg font-semibold leading-8 text-white hero-copy-shadow md:text-2xl md:leading-10"
+            data-hero-text="light"
+          >
+            Diagnóstico preciso, cuidado acolhedor e acompanhamento individualizado
+            para devolver conforto, saúde e qualidade de vida ao seu pet.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-10 flex w-full max-w-md flex-col justify-center gap-3 sm:max-w-none sm:flex-row"
+          >
+            <a
+              href={appointment}
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-bold text-ink shadow-[0_24px_80px_rgba(255,255,255,0.18)] transition duration-300 hover:scale-[1.02] hover:bg-aureate hover:text-white hover:shadow-[0_28px_90px_rgba(181,154,98,0.34)] focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-ink"
             >
-              <PawPrint className="h-4 w-4 text-aureate" />
-              Dermatologia veterinaria premium
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 34 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-4xl text-balance text-5xl font-semibold leading-[0.96] tracking-normal text-ink sm:text-6xl lg:text-[5.85rem]"
+              <CalendarDays className="h-5 w-5" />
+              Agendar Consulta
+            </a>
+            <a
+              href="#servicos"
+              className="inline-flex h-14 items-center justify-center gap-2 rounded-full border border-white/20 bg-ink/72 px-8 text-base font-bold text-white shadow-[0_20px_70px_rgba(0,0,0,0.22)] backdrop-blur-xl transition duration-300 hover:scale-[1.02] hover:bg-clinic hover:shadow-[0_28px_90px_rgba(29,92,115,0.32)] focus:outline-none focus:ring-2 focus:ring-white/40 focus:ring-offset-2 focus:ring-offset-ink"
             >
-              Cuidado especializado para a saúde da pele do seu pet.
-            </motion.h1>
+              Conhecer Especialidades
+              <ArrowRight className="h-5 w-5" />
+            </a>
+          </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-7 max-w-2xl text-xl leading-9 text-ink/66 md:text-2xl"
-            >
-              Diagnóstico preciso, tratamento personalizado e acompanhamento
-              especializado para cães e gatos com doenças dermatológicas.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-8 flex flex-wrap items-center gap-3"
-            >
-              {heroBadges.map((badge) => {
-                const Icon = badge.icon;
-                return (
-                  <span
-                    key={badge.label}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/80 bg-white/72 px-4 py-2.5 text-sm font-semibold text-ink shadow-[0_12px_34px_rgba(23,33,43,0.07)] backdrop-blur-2xl"
-                  >
-                    <Icon className="h-4 w-4 text-clinic" />
-                    {badge.label}
-                  </span>
-                );
-              })}
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, delay: 0.42, ease: [0.22, 1, 0.36, 1] }}
-              className="mt-10 flex flex-col gap-3 sm:flex-row"
-            >
-              <Button href={appointment} className="h-14 px-7 text-base">
-                <CalendarDays className="h-5 w-5" />
-                Agendar Consulta
-              </Button>
-              <Button href={whatsapp} variant="secondary" target="_blank" rel="noreferrer" className="h-14 px-7 text-base">
-                <Phone className="h-5 w-5" />
-                Falar no WhatsApp
-              </Button>
-            </motion.div>
-          </div>
-
-          <motion.div style={{ y: portraitY }} className="relative z-10 mx-auto w-full max-w-[680px]">
-            <div className="absolute -inset-7 rounded-[3.2rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.82),rgba(216,195,170,0.18),rgba(29,92,115,0.16))] blur-2xl" />
-            <div className="relative overflow-hidden rounded-[3rem] border border-white/80 bg-white/58 p-3 shadow-[0_34px_120px_rgba(23,33,43,0.18)] backdrop-blur-2xl">
-              <div className="relative aspect-[0.92] overflow-hidden rounded-[2.35rem] bg-ivory">
-                <Image
-                  src="/dra-heloisa-consultorio.png"
-                  alt="Dra. Heloisa Pavanello em consultório veterinario"
-                  fill
-                  priority
-                  className="object-cover object-[50%_44%]"
-                  sizes="(max-width: 1024px) 94vw, 48vw"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-ink/42 to-transparent" />
-                <div className="absolute bottom-5 left-5 right-5 flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-white/30 bg-white/18 p-4 text-white shadow-soft backdrop-blur-2xl">
-                  <div>
-                    <p className="text-sm font-semibold">Dra. Heloisa Pavanello</p>
-                    <p className="mt-1 text-xs text-white/72">CRMV-SP 74108</p>
-                  </div>
-                  <div className="flex items-center gap-1 rounded-full bg-white/20 px-3 py-1.5 text-xs font-semibold">
-                    <Dog className="h-3.5 w-3.5" />
-                    <Cat className="h-3.5 w-3.5" />
-                    Cães e gatos
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="absolute -right-4 top-12 hidden rounded-[1.7rem] border border-white/70 bg-white/74 p-5 shadow-[0_22px_70px_rgba(23,33,43,0.12)] backdrop-blur-2xl md:block">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-clinic text-white shadow-soft">
-                <ShieldCheck className="h-6 w-6" />
-              </div>
-              <p className="mt-3 text-sm font-semibold text-ink">Conduta segura</p>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-[0.16em] text-ink/48">
-                diagnóstico claro
-              </p>
-            </div>
-            <div className="absolute -left-5 bottom-16 hidden rounded-[1.7rem] border border-white/70 bg-white/78 p-5 shadow-[0_22px_70px_rgba(23,33,43,0.12)] backdrop-blur-2xl md:block">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-aureate/14 text-aureate shadow-sm">
-                <HeartPulse className="h-6 w-6" />
-              </div>
-              <p className="mt-3 text-sm font-semibold text-ink">Acompanhamento próximo</p>
-            </div>
+          <motion.div
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.46, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-11 flex flex-wrap justify-center gap-3"
+          >
+            {heroBadges.map((badge) => {
+              const Icon = badge.icon;
+              return (
+                <span
+                  key={badge.label}
+                  className="inline-flex items-center gap-2 rounded-full border border-white/24 bg-white/14 px-5 py-3 text-sm font-bold text-white shadow-[0_14px_46px_rgba(0,0,0,0.18)] backdrop-blur-2xl md:text-base"
+                >
+                  <Icon className="h-4 w-4 text-aureate" />
+                  {badge.label}
+                </span>
+              );
+            })}
           </motion.div>
         </div>
       </section>
